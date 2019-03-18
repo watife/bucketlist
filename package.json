@@ -7,7 +7,7 @@
     "dev": "nodemon --exec babel-node src/app.js",
     "start": "node build/app.js",
     "dev-build": "babel api/src -d build",
-    "build": "npm run copy && babel api/src -d build",
+    "build": "npm run dev-build && npm run copy && babel api/src -d build",
     "dulpicate-swagger-docs": "cat api/src/swagger.json >> ./build/swagger.json",
     "copy": "cp -r api/src/* build"
   },
