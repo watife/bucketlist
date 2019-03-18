@@ -1,0 +1,460 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Bucketlist",
+    "description": "A bucketlist application",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    },
+    "contact": {
+      "email": "watifefakorede@gmail.com"
+    }
+  },
+  "tags": [
+    {
+      "name": "User",
+      "description": "API Endpoints for users"
+    },
+    {
+      "name": "Bucketlists",
+      "description": "API Endpoints for bucketlists"
+    },
+    {
+      "name": "Items",
+      "description": "API Endpoints for bucketlist items"
+    }
+  ],
+  "paths": {
+    "/api/v1/auth/signup": {
+      "post": {
+        "tags": ["User"],
+        "description": "Register a New User in the system",
+        "requestBody": {
+          "description": "Input Data Format",
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Name of User"
+                  },
+                  "email": {
+                    "type": "string",
+                    "description": "Email of User"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "Password of User"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "user Registered"
+          },
+          "400": {
+            "description": "User Registration Validation Error"
+          },
+          "500": {
+            "description": "User Already Registred"
+          }
+        }
+      }
+    },
+    "/api/v1/auth/login": {
+      "post": {
+        "tags": ["User"],
+        "description": "Log In a Registered User",
+        "requestBody": {
+          "description": "Input Data Format",
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "Email of Registered User"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "Password of Registered User"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User Logged In"
+          },
+          "400": {
+            "description": "User Login Validation Error"
+          },
+          "500": {
+            "description": "User Does Not Exist"
+          }
+        }
+      }
+    },
+    "/api/v1/bucketlists/": {
+      "parameters": [
+        {
+          "name": "limit",
+          "in": "query",
+          "schema": {
+            "type": "integer",
+            "description": "The numbers of items to return",
+            "format": "int64"
+          }
+        },
+        {
+          "name": "q",
+          "in": "query",
+          "schema": {
+            "type": "string",
+            "description": "The name of the bucket list for search",
+            "format": "int64"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Get all bucketlists",
+        "tags": ["Bucketlists"],
+        "responses": {
+          "200": {
+            "description": "Bucketlist retrieved successfully"
+          },
+          "400": {
+            "description": "Could not retrieve bucketlists"
+          },
+          "401": {
+            "description": "Only Authenticated users are Authorized"
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/v1/bucketlist": {
+      "post": {
+        "summary": "Add new bucketlist for loggedIn User",
+        "tags": ["Bucketlists"],
+        "requestBody": {
+          "description": "Input Data Format",
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Name of new bucketlist"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Bucketlist created successfully"
+          },
+          "400": {
+            "description": "could not create bucketlist"
+          },
+          "401": {
+            "description": "Only Authenticated user are Authorized"
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/v1/bucketlist/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "ID of Bucketlist that we want to work with",
+          "schema": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Get bucketlist with given ID for loggedIn User",
+        "tags": ["Bucketlists"],
+        "responses": {
+          "200": {
+            "description": "bucketlist retrived successfully"
+          },
+          "400": {
+            "description": "The specified bucketlist does not exist"
+          },
+          "401": {
+            "description": "Only Authenticated Users are Authorized"
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      },
+      "put": {
+        "summary": "Update Bucketlist with given ID",
+        "tags": ["Bucketlists"],
+        "requestBody": {
+          "description": "Input Data Format",
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "New name of bucketlist"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "bucketlist Updated"
+          },
+          "400": {
+            "description": "The specified bucketlist does not exist"
+          },
+          "401": {
+            "description": "Only Authenticated Users are Authorized"
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      },
+      "delete": {
+        "summary": "Delete Bucketlist with given ID",
+        "tags": ["Bucketlists"],
+        "responses": {
+          "200": {
+            "description": "Bucketlist deleted successfully"
+          },
+          "400": {
+            "description": "The specified bucketlist could not be deleted"
+          },
+          "401": {
+            "description": "Only Authenticated Users are Authorized"
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/v1/bucketlists/{id}/item": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "ID of Item that we want to work with",
+          "schema": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Get all items in a bucketlist",
+        "tags": ["Items"],
+        "responses": {
+          "200": {
+            "description": "Items retrieved successfully"
+          },
+          "400": {
+            "description": "The specified item could not be retrieved"
+          },
+          "401": {
+            "description": "Only Authenticated Users are Authorized"
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "Add New Item to a bucketlist",
+        "tags": ["Items"],
+        "requestBody": {
+          "description": "Input Data Format",
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Name of new item"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Item created successfully in the bucketlist"
+          },
+          "400": {
+            "description": "The specified item could not be created"
+          },
+          "401": {
+            "description": "Only Authenticated Caterers are Authorized"
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/api/v1/bucketlists/{id}/{item_id}": {
+      "get": {
+        "summary": "Get the specified item.",
+        "tags": ["Items"],
+        "responses": {
+          "200": {
+            "description": "Item retrived successfully"
+          },
+          "400": {
+            "description": "The specified item could not be retrieved"
+          },
+          "401": {
+            "description": "Only Authenticated Caterers are Authorized"
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "ID of Bucketlist that we want to work with",
+          "schema": {
+            "type": "integer",
+            "format": "int64"
+          }
+        },
+        {
+          "name": "item_id",
+          "in": "path",
+          "required": true,
+          "description": "ID of Item that we want to work with",
+          "schema": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      ],
+      "delete": {
+        "summary": "Delete Item with given ID",
+        "tags": ["Items"],
+        "responses": {
+          "200": {
+            "description": "Item Deleted successfully"
+          },
+          "401": {
+            "description": "Only Authenticated Caterers are Authorized"
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      },
+      "put": {
+        "summary": "Modify Item with given ID",
+        "tags": ["Items"],
+        "requestBody": {
+          "description": "Input Data Format",
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "New name of Item"
+                  },
+                  "done": {
+                    "type": "boolean",
+                    "description": "New status of Item"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Item updated successfully"
+          },
+          "400": {
+            "description": "Specified item does not exist"
+          },
+          "401": {
+            "description": "Only Authenticated Caterers are Authorized"
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "JWT": {
+        "type": "apiKey",
+        "description": "JWT token is received after registering/login, input format: \"Bearer \\<token\\>\"",
+        "name": "Authorization",
+        "in": "header"
+      }
+    }
+  }
+}
