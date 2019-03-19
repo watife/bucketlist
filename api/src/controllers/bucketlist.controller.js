@@ -214,9 +214,20 @@ class BucketlistController {
         throw new Error("could not modify this bucketlist");
       }
 
+      const bucketlistReturned = await Bucketlist.findOne({
+        include: [
+          {
+            model: Item,
+            as: "items"
+          }
+        ],
+        where: { id, created_by: req.user.id }
+      });
+
       return res.status(200).json({
         status: "success",
-        message: "bucketlist retrieved successfully"
+        message: "bucketlist retrieved successfully",
+        data: bucketlistReturned
       });
     } catch (error) {
       return res.status(400).json({

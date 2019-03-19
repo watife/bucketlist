@@ -19,8 +19,12 @@ export default class Item extends Component {
       data,
       onSubmit,
       handleChange,
-      item,
-      onDelete
+      value,
+      onDelete,
+      onItemDelete,
+      onHandleEdit,
+      editValue,
+      onStateReset
     } = this.props;
 
     const bucketlists = data && data.length !== 0 ? data : null;
@@ -49,8 +53,10 @@ export default class Item extends Component {
                   <p>{item.name}</p>
                   <div className="button-group">
                     <button>Done</button>
-                    <button>Edit</button>
-                    <button>Delete</button>
+                    <button onClick={() => onHandleEdit(item.id)}>Edit</button>
+                    <button onClick={() => onItemDelete(item.id)}>
+                      Delete
+                    </button>
                   </div>
                 </div>
               </div>
@@ -58,8 +64,25 @@ export default class Item extends Component {
           })}
 
         <div className="item__add">
-          <input type="text" name="item" onChange={handleChange} value={item} />
-          <button onClick={onSubmit}>Add</button>
+          <input
+            type="text"
+            name="item"
+            onChange={handleChange}
+            value={value}
+          />
+          <button onClick={onSubmit}>{editValue ? "Edit" : "Add"}</button>
+
+          <button
+            // onClick={}
+            style={{
+              display: editValue ? "inherit" : "none",
+              marginLeft: 7,
+              paddingLeft: "2rem"
+            }}
+            onClick={() => onStateReset("item")}
+          >
+            Cancel
+          </button>
         </div>
       </div>
     );

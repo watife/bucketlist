@@ -140,13 +140,18 @@ class ItemController {
         { where: { id: item_id, bucketlist_id: id } }
       );
 
+      const itemReturned = await Item.findOne({
+        where: { bucketlist_id: id, id: item_id }
+      });
+
       if (!itemUpdated) {
         throw new Error("could not modify this item");
       }
 
       return res.status(200).json({
         status: "success",
-        message: "item updated successfully"
+        message: "item updated successfully",
+        data: itemReturned
       });
     } catch (error) {
       return res.status(400).json({

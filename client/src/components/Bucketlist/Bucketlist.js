@@ -24,7 +24,8 @@ class Bucketlist extends Component {
       error: null,
       list: "",
       item: "",
-      search: ""
+      search: "",
+      edit: null
     };
   }
 
@@ -49,6 +50,18 @@ class Bucketlist extends Component {
 
   activeBucketlistChange = id => {
     this.setState({ activeBucketlist: id });
+  };
+
+  /**
+   * reset state
+   */
+
+  onStateReset = state => {
+    const stateReset = {
+      [state]: "",
+      edit: null
+    };
+    this.setState(stateReset);
   };
 
   /**
@@ -86,16 +99,22 @@ class Bucketlist extends Component {
    * create item in a bucketlist
    */
   onItemSubmit = async () => {
-    const { item, activeBucketlist, bucketlist } = this.state;
+    const { item, activeBucketlist, bucketlist, edit } = this.state;
     const data = {
       name: item
     };
 
     try {
-      const response = await Api.create(
-        `bucketlists/${activeBucketlist}/items`,
-        data
-      );
+      let ApiCall;
+      if (edit) {
+        ApiCall = Api.update(
+          `bucketlists/${activeBucketlist}/items/${edit.id}`,
+          data
+        );
+      } else {
+        ApiCall = Api.create(`bucketlists/${activeBucketlist}/items`, data);
+      }
+      const response = await ApiCall;
 
       const newBucketlist = bucketlist.slice();
 
@@ -106,8 +125,22 @@ class Bucketlist extends Component {
         );
         activeList[0].items.push(response.data);
 
-        this.setState({ bucketlist: newBucketlist });
+        this.setState({ bucketlist: newBucketlist, item: "" });
       }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  /**
+   * edit item
+   */
+  onHandleEdit = async id => {
+    const { activeBucketlist } = this.state;
+    const url = `bucketlists/${activeBucketlist}/items/${id}`;
+    try {
+      const response = await Api.get(url);
+      this.setState({ edit: response.data, item: response.data.name });
     } catch (error) {
       console.log(error);
     }
@@ -157,21 +190,46 @@ class Bucketlist extends Component {
     }
   };
 
+  /**
+   * Delete Item
+   */
+  onItemDelete = async id => {
+    const { bucketlist, activeBucketlist } = this.state;
+    try {
+      const response = await Api.delete(
+        `bucketlists/${activeBucketlist}/items/${id}`
+      );
+
+      if (response.status === "success") {
+        const newBucketlist = bucketlist.filter(bucketlist => {
+          return (bucketlist.items = bucketlist.items.filter(
+            item => item.id !== id
+          ));
+        });
+        this.setState({
+          bucketlist: newBucketlist
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   render() {
-    const { bucketlist, search, item } = this.state;
+    const { bucketlist, search, item, edit } = this.state;
     return (
       <div className="bucketlist">
         <div className="bucketlist-wrapper">
           <div className="card-large">
             <div className="card-body">
               <div className="bucketlist-header">
-                <Link to="/bucketlist/">
+                <Link to="/bucketlist">
                   <p className="logo-small">bucketlist</p>
                 </Link>
                 <Search
                   handleChange={this.handleChange}
                   onSearch={this.onSearch}
-                  search={search}
+                  value={search}
                 />
                 <img
                   src={add}
@@ -197,8 +255,12 @@ class Bucketlist extends Component {
                   activeBucketlist={this.state.activeBucketlist}
                   handleChange={this.handleChange}
                   onSubmit={this.onItemSubmit}
-                  item={item}
+                  value={item}
                   onDelete={this.onDelete}
+                  onItemDelete={this.onItemDelete}
+                  onHandleEdit={this.onHandleEdit}
+                  editValue={edit}
+                  onStateReset={this.onStateReset}
                 />
               </main>
             </div>
