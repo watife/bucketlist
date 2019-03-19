@@ -1,15 +1,19 @@
-import React, { Component } from "react";
+import React from "react";
 
-export default class Search extends Component {
-  state = {
-    search: ""
-  };
-  render() {
-    return (
-      <div className="search">
-        <input type="text" placeholder="search" />
-        <button className="search-button">Search</button>
-      </div>
-    );
-  }
-}
+const Search = ({ handleChange, onSearch }) => {
+  return (
+    <div className="search">
+      <input
+        type="text"
+        placeholder="search"
+        name="search"
+        onChange={handleChange}
+      />
+      <button className="search-button" type="submit" onClick={onSearch}>
+        Search
+      </button>
+    </div>
+  );
+};
+
+export default Search;

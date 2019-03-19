@@ -18,7 +18,7 @@ body {
 .card {
   background-color: #ffff;
   width: 40rem;
-  margin: 80px auto;
+  margin: 40px auto;
   -webkit-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
   -moz-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
   box-shadow: 0 2rem 6rem rgba(0, 0, 0, 0.3);

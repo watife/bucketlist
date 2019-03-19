@@ -8,8 +8,6 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Login from "./components/Login/Login";
 import SignUp from "./components/SignUp/SignUp";
 import Bucketlist from "./components/Bucketlist/Bucketlist";
-// import SignIn from "../Components/SignIn/SignIn";
-// import Caterer from "../Components/Caterer/Caterer";
 
 /**
  * Route declaration

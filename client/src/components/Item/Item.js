@@ -14,15 +14,15 @@ export default class Item extends Component {
 
   render() {
     const { dropdownOpen } = this.state;
-    const { activeBucketlist, data } = this.props;
+    const { activeBucketlist, data, onSubmit, handleChange } = this.props;
+
+    const bucketlists = data && data.length !== 0 ? data : null;
 
     const bucketlist =
-      data &&
-      data.filter(bucketlist => {
+      bucketlists &&
+      bucketlists.filter(bucketlist => {
         return bucketlist.id === activeBucketlist;
       });
-
-    console.log(bucketlist);
 
     return (
       <div className="item">
@@ -47,8 +47,8 @@ export default class Item extends Component {
           })}
 
         <div className="item__add">
-          <input type="text" />
-          <button>Add</button>
+          <input type="text" name="item" onChange={handleChange} />
+          <button onClick={onSubmit}>Add</button>
         </div>
       </div>
     );

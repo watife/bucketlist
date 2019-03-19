@@ -31,15 +31,15 @@ class SignIn extends Component {
 
       const url = "auth/login";
 
-      const response = await Api.create(url, data);
+      const response = await Api.auth(url, data);
 
       if (response.status === "success") {
-        localStorage.setItem("user", JSON.stringify(response.token));
         this.props.history.push("/bucketlist");
+
         return true;
       }
       this.setState({
-        error: response
+        error: response.data.message
       });
     } catch (error) {
       this.setState({

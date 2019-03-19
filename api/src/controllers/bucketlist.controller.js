@@ -59,6 +59,12 @@ class BucketlistController {
       // perform pagination if limit exists
       if (limit) {
         const bucketlist = await Bucketlist.findAll({
+          include: [
+            {
+              model: Item,
+              as: "items"
+            }
+          ],
           limit,
           where: { created_by: req.user.id }
         });
@@ -77,6 +83,12 @@ class BucketlistController {
       //   perform search if q is present
       if (q) {
         const bucketlist = await Bucketlist.findAll({
+          include: [
+            {
+              model: Item,
+              as: "items"
+            }
+          ],
           where: { created_by: req.user.id, name: { [Op.like]: `%${q}%` } }
         });
 

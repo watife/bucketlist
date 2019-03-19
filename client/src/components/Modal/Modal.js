@@ -1,7 +1,7 @@
 import React from "react";
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
+import { Modal, ModalHeader, ModalBody } from "reactstrap";
 
-const ModalView = ({ modal, toggle }) => {
+const CreateBucketlist = ({ modal, toggle, onSubmit, handleChange }) => {
   return (
     <Modal isOpen={modal} toggle={toggle}>
       <ModalHeader toggle={toggle} className="header-text">
@@ -13,12 +13,16 @@ const ModalView = ({ modal, toggle }) => {
             type="text"
             className="create-input"
             placeholder="create bucketlist"
+            name="list"
+            onChange={handleChange}
           />
-          <button className="create-button">Create</button>
+          <button className="create-button" type="submit" onClick={onSubmit}>
+            Create
+          </button>
         </div>
       </ModalBody>
     </Modal>
   );
 };
 
-export default ModalView;
+export default CreateBucketlist;

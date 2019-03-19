@@ -14,27 +14,39 @@ class SignUp extends Component {
   state = {
     name: "",
     email: "",
-    password: ""
+    password: "",
+    error: null
   };
 
   handleChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  onSubmit = () => {
-    const { name, email, password } = this.state;
-    const data = {
-      name,
-      email,
-      password
-    };
+  onSubmit = async () => {
+    try {
+      const { name, email, password } = this.state;
+      const data = {
+        name,
+        email,
+        password
+      };
 
-    const url = "auth/signup";
+      const url = "auth/signup";
 
-    const response = Api.create(url, data);
+      const response = await Api.auth(url, data);
 
-    if (response.status === "success") {
-      localStorage.setItem("user", JSON.stringify(response.token));
+      if (response.status === "success") {
+        this.props.history.push("/bucketlist");
+
+        return true;
+      }
+      this.setState({
+        error: response
+      });
+    } catch (error) {
+      this.setState({
+        error: error
+      });
     }
   };
 

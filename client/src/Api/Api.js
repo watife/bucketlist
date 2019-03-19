@@ -10,13 +10,13 @@ Api.get = async url => {
   try {
     const response = await axios.get(`${baseUrl}${url}`, {
       headers: {
-        Authorization: JSON.parse(token) || null
+        Authorization: token || null
       }
     });
     return response.data;
   } catch (error) {
     // console.log(error.response.data.message);
-    return error.response.data;
+    return error;
   }
 };
 
@@ -24,7 +24,7 @@ Api.create = async (url, data) => {
   try {
     const response = await axios.post(`${baseUrl}${url}`, data, {
       headers: {
-        Authorization: JSON.parse(token) || null
+        Authorization: token || null
       }
     });
     return response.data;
@@ -37,7 +37,7 @@ Api.update = async (url, data) => {
   try {
     const response = await axios.put(`${baseUrl}${url}`, data, {
       headers: {
-        Authorization: JSON.parse(token) || null
+        Authorization: token || null
       }
     });
     return response.data;
@@ -50,12 +50,24 @@ Api.delete = async (url, data) => {
   try {
     const response = await axios.delete(`${baseUrl}${url}`, data, {
       headers: {
-        Authorization: JSON.parse(token) || null
+        Authorization: token || null
       }
     });
     return response.data;
   } catch (error) {
     return error.response.data;
+  }
+};
+
+Api.auth = async (url, data) => {
+  try {
+    const response = await axios.post(`${baseUrl}${url}`, data);
+
+    localStorage.setItem("user", response.data.token);
+
+    return response.data;
+  } catch (error) {
+    return error.response.data.message;
   }
 };
 export default Api;
