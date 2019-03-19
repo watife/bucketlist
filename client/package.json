@@ -1,0 +1,50 @@
+{
+  "name": "bucketlist",
+  "version": "1.0.0",
+  "description": "a bucketlist application to save todos",
+  "main": "app.js",
+  "babel": {
+    "presets": [
+      "@babel/preset-env",
+      "@babel/preset-react"
+    ],
+    "plugins": [
+      "transform-class-properties"
+    ]
+  },
+  "scripts": {
+    "start": "live-server public/",
+    "build": "webpack",
+    "dev-server": "webpack-dev-server"
+  },
+  "author": "fakorede boluwatife",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/polyfill": "^7.2.5",
+    "axios": "^0.18.0",
+    "babel-eslint": "^10.0.1",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "bootstrap": "^4.3.1",
+    "dotenv-webpack": "^1.7.0",
+    "file-loader": "^3.0.1",
+    "node-sass": "^4.11.0",
+    "react": "^16.8.4",
+    "react-dom": "^16.8.4",
+    "react-particle-animation": "^1.0.1",
+    "react-router-dom": "^4.4.0",
+    "reactstrap": "^7.1.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.3.4",
+    "@babel/preset-env": "^7.3.4",
+    "@babel/preset-react": "^7.0.0",
+    "babel-loader": "^8.0.5",
+    "css-loader": "^2.1.1",
+    "live-server": "^1.2.1",
+    "sass-loader": "^7.1.0",
+    "style-loader": "^0.23.1",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.2.3",
+    "webpack-dev-server": "^3.2.1"
+  }
+}
