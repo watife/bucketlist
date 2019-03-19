@@ -1,0 +1,75 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  box-sizing: border-box;
+  font-family: "Roboto Slab", serif;
+}
+
+.card {
+  background-color: #ffff;
+  width: 40rem;
+  margin: 80px auto;
+  -webkit-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+  box-shadow: 0 2rem 6rem rgba(0, 0, 0, 0.3);
+  border-radius: 7px;
+}
+
+.card-large {
+  width: 100%;
+  padding: 1.5rem;
+  box-shadow: 0 2rem 6rem rgba(0, 0, 0, 0.3);
+  border-radius: 7px;
+}
+
+.ruler {
+  border: 0.7px solid #dfdcdc;
+  margin: 2rem 0;
+}
+
+.legal {
+  font-size: 1.2rem;
+}
+
+a:visited,
+a:link {
+  text-decoration: none;
+  color: #6054e9;
+}
+
+.logo {
+  font-family: "Lobster", cursive;
+  font-size: 3rem;
+  color: #fff;
+  padding: 2rem;
+  font-weight: 900;
+}
+
+.logo-small {
+  font-family: "Lobster", cursive;
+  font-size: 1.4rem;
+  color: #6054e9;
+  padding: 2rem;
+  font-weight: 600;
+  width: 20rem;
+}
+
+.button-group button {
+  padding: 0.3rem 3rem;
+  margin-right: 2rem;
+
+  /* width: 5rem; */
+}
+/* .input-group {
+  margin-left: 5rem;
+} */

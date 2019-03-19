@@ -16,7 +16,9 @@ class BucketlistController {
       const { name } = req.body;
       // verify that the bucketlist doesnt exist
 
-      const listCheck = await Bucketlist.findOne({ where: { name } });
+      const listCheck = await Bucketlist.findOne({
+        where: { name, created_by: req.user.id }
+      });
 
       if (listCheck) {
         throw new Error("this bucketlist already exist");
