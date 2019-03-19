@@ -58,7 +58,8 @@ function () {
                 _context.next = 4;
                 return _bucketlist2.default.findOne({
                   where: {
-                    name: name
+                    name: name,
+                    created_by: req.user.id
                   }
                 });
 
