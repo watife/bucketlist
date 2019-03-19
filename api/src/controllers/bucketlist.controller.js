@@ -33,10 +33,21 @@ class BucketlistController {
         throw new Error("oops!, could not create the list, try again");
       }
 
+      // fetch this bucketlist and return
+      const returnedBucketlist = await Bucketlist.findOne({
+        include: [
+          {
+            model: Item,
+            as: "items"
+          }
+        ],
+        where: { name, created_by: req.user.id }
+      });
+
       return res.status(201).json({
         status: "success",
         message: "Bucketlist created successfully",
-        data: newBucketlist
+        data: returnedBucketlist
       });
     } catch (error) {
       return res.status(400).json({

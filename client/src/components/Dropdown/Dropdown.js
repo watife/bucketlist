@@ -8,7 +8,7 @@ import {
 import menu from "../../../assets/svg/menu.svg";
 
 // eslint-disable-next-line react/prop-types
-const DropdownView = ({ dropdownOpen, toggle }) => {
+const DropdownView = ({ dropdownOpen, toggle, onDelete }) => {
   return (
     <div>
       <Dropdown isOpen={dropdownOpen} toggle={toggle}>
@@ -23,7 +23,7 @@ const DropdownView = ({ dropdownOpen, toggle }) => {
         </DropdownToggle>
         <DropdownMenu>
           <DropdownItem>Edit</DropdownItem>
-          <DropdownItem>Delete</DropdownItem>
+          <DropdownItem onClick={onDelete}>Delete</DropdownItem>
         </DropdownMenu>
       </Dropdown>
     </div>

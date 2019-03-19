@@ -1,6 +1,6 @@
 import React from "react";
 
-const Search = ({ handleChange, onSearch }) => {
+const Search = ({ handleChange, onSearch, search }) => {
   return (
     <div className="search">
       <input
@@ -8,6 +8,7 @@ const Search = ({ handleChange, onSearch }) => {
         placeholder="search"
         name="search"
         onChange={handleChange}
+        value={search}
       />
       <button className="search-button" type="submit" onClick={onSearch}>
         Search

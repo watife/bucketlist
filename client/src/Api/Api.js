@@ -46,9 +46,9 @@ Api.update = async (url, data) => {
   }
 };
 
-Api.delete = async (url, data) => {
+Api.delete = async url => {
   try {
-    const response = await axios.delete(`${baseUrl}${url}`, data, {
+    const response = await axios.delete(`${baseUrl}${url}`, {
       headers: {
         Authorization: token || null
       }

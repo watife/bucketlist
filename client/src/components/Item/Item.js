@@ -14,7 +14,14 @@ export default class Item extends Component {
 
   render() {
     const { dropdownOpen } = this.state;
-    const { activeBucketlist, data, onSubmit, handleChange } = this.props;
+    const {
+      activeBucketlist,
+      data,
+      onSubmit,
+      handleChange,
+      item,
+      onDelete
+    } = this.props;
 
     const bucketlists = data && data.length !== 0 ? data : null;
 
@@ -28,7 +35,11 @@ export default class Item extends Component {
       <div className="item">
         <div className="item__header">
           <p className="">{bucketlist && bucketlist[0].name}</p>
-          <DropdownView dropdownOpen={dropdownOpen} toggle={this.toggle} />
+          <DropdownView
+            dropdownOpen={dropdownOpen}
+            toggle={this.toggle}
+            onDelete={onDelete}
+          />
         </div>
         {bucketlist &&
           bucketlist[0].items.map(item => {
@@ -47,7 +58,7 @@ export default class Item extends Component {
           })}
 
         <div className="item__add">
-          <input type="text" name="item" onChange={handleChange} />
+          <input type="text" name="item" onChange={handleChange} value={item} />
           <button onClick={onSubmit}>Add</button>
         </div>
       </div>

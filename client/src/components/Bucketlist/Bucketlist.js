@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import Api from "../../Api/Api";
 import Search from "../Search/Search";
 import CreateBucketlist from "../Modal/Modal";
@@ -122,8 +123,34 @@ class Bucketlist extends Component {
       const response = await Api.get(`bucketlists?q=${search}`);
 
       if (response.status === "success") {
-        console.log(response.data);
-        this.setState({ bucketlist: response.data });
+        this.setState({
+          bucketlist: response.data,
+          activeBucketlist: response.data[0].id,
+          search: ""
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  /**
+   * Delete bucketlist
+   */
+  onDelete = async () => {
+    const { bucketlist, activeBucketlist } = this.state;
+    try {
+      const response = await Api.delete(`bucketlists/${activeBucketlist}`);
+
+      if (response.status === "success") {
+        const newBucketlist = bucketlist.filter(
+          bucketlist => bucketlist.id !== activeBucketlist
+        );
+        this.setState({
+          activeBucketlist:
+            newBucketlist.length !== 0 ? newBucketlist[0].id : null,
+          bucketlist: newBucketlist.length !== 0 ? newBucketlist : null
+        });
       }
     } catch (error) {
       console.log(error);
@@ -131,17 +158,20 @@ class Bucketlist extends Component {
   };
 
   render() {
-    const { bucketlist } = this.state;
+    const { bucketlist, search, item } = this.state;
     return (
       <div className="bucketlist">
         <div className="bucketlist-wrapper">
           <div className="card-large">
             <div className="card-body">
               <div className="bucketlist-header">
-                <p className="logo-small">bucketlist</p>
+                <Link to="/bucketlist/">
+                  <p className="logo-small">bucketlist</p>
+                </Link>
                 <Search
                   handleChange={this.handleChange}
                   onSearch={this.onSearch}
+                  search={search}
                 />
                 <img
                   src={add}
@@ -167,6 +197,8 @@ class Bucketlist extends Component {
                   activeBucketlist={this.state.activeBucketlist}
                   handleChange={this.handleChange}
                   onSubmit={this.onItemSubmit}
+                  item={item}
+                  onDelete={this.onDelete}
                 />
               </main>
             </div>
