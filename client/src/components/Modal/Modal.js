@@ -1,7 +1,14 @@
 import React from "react";
 import { Modal, ModalHeader, ModalBody } from "reactstrap";
 
-const CreateBucketlist = ({ modal, toggle, onSubmit, handleChange }) => {
+const CreateBucketlist = ({
+  modal,
+  toggle,
+  onSubmit,
+  handleChange,
+  editValue,
+  value
+}) => {
   return (
     <Modal isOpen={modal} toggle={toggle}>
       <ModalHeader toggle={toggle} className="header-text">
@@ -14,6 +21,7 @@ const CreateBucketlist = ({ modal, toggle, onSubmit, handleChange }) => {
             className="create-input"
             placeholder="create bucketlist"
             name="list"
+            value={value}
             onChange={handleChange}
           />
           <button className="create-button" type="submit" onClick={onSubmit}>

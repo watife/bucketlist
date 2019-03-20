@@ -24,7 +24,8 @@ export default class Item extends Component {
       onItemDelete,
       onHandleEdit,
       editValue,
-      onStateReset
+      onStateReset,
+      onEditBucketlist
     } = this.props;
 
     const bucketlists = data && data.length !== 0 ? data : null;
@@ -43,6 +44,7 @@ export default class Item extends Component {
             dropdownOpen={dropdownOpen}
             toggle={this.toggle}
             onDelete={onDelete}
+            onEditBucketlist={onEditBucketlist}
           />
         </div>
         {bucketlist &&

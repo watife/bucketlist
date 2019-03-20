@@ -25,7 +25,8 @@ class Bucketlist extends Component {
       list: "",
       item: "",
       search: "",
-      edit: null
+      edit: null,
+      bucketEdit: null
     };
   }
 
@@ -44,7 +45,8 @@ class Bucketlist extends Component {
 
   toggle = () => {
     this.setState(prevState => ({
-      modal: !prevState.modal
+      modal: !prevState.modal,
+      bucketEdit: null
     }));
   };
 
@@ -72,23 +74,40 @@ class Bucketlist extends Component {
   };
 
   onSubmit = async () => {
-    const { bucketlist } = this.state;
+    const { bucketlist, bucketEdit } = this.state;
 
     const data = {
       name: this.state.list
     };
 
     try {
-      const response = await Api.create("bucketlists", data);
+      let ApiCall;
+      if (bucketEdit) {
+        ApiCall = Api.update(`bucketlists/${bucketEdit.id}`, data);
+      } else {
+        ApiCall = Api.create("bucketlists", data);
+      }
+      const response = await ApiCall;
 
       // get the previous array for bucketlist and add to it
       const newBucketlist = bucketlist.slice();
 
       if (response.status === "success") {
-        newBucketlist.push(response.data);
+        if (bucketEdit) {
+          const index = newBucketlist.findIndex(
+            list => list.id === bucketEdit.id
+          );
+          console.log(index);
+          newBucketlist.splice(index, 1, response.data);
+        } else {
+          newBucketlist.push(response.data);
+        }
 
-        this.setState({ bucketlist: newBucketlist });
-        this.toggle();
+        this.setState({
+          bucketlist: newBucketlist,
+          bucketEdit: null,
+          modal: false
+        });
       }
     } catch (error) {
       console.log(error);
@@ -123,9 +142,19 @@ class Bucketlist extends Component {
         const activeList = newBucketlist.filter(
           list => list.id === activeBucketlist
         );
-        activeList[0].items.push(response.data);
 
-        this.setState({ bucketlist: newBucketlist, item: "" });
+        if (edit) {
+          const index = activeList[0].items.findIndex(
+            item => item.id === edit.id
+          );
+
+          activeList[0].items.splice(index, 1, response.data);
+          // activeItem.name = response.data.name;
+        } else {
+          activeList[0].items.push(response.data);
+        }
+
+        this.setState({ bucketlist: newBucketlist, item: "", edit: null });
       }
     } catch (error) {
       console.log(error);
@@ -135,12 +164,31 @@ class Bucketlist extends Component {
   /**
    * edit item
    */
-  onHandleEdit = async id => {
+  onEditItem = async id => {
     const { activeBucketlist } = this.state;
     const url = `bucketlists/${activeBucketlist}/items/${id}`;
     try {
       const response = await Api.get(url);
       this.setState({ edit: response.data, item: response.data.name });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  /**
+   * edit bucketlist
+   */
+  onEditBucketlist = async id => {
+    const { activeBucketlist } = this.state;
+    const url = `bucketlists/${activeBucketlist}`;
+    try {
+      const response = await Api.get(url);
+      this.setState({
+        bucketEdit: response.data,
+        modal: true,
+        list: response.data.name,
+        activeBucketlist: response.data.id
+      });
     } catch (error) {
       console.log(error);
     }
@@ -216,7 +264,7 @@ class Bucketlist extends Component {
   };
 
   render() {
-    const { bucketlist, search, item, edit } = this.state;
+    const { bucketlist, search, item, edit, list, bucketEdit } = this.state;
     return (
       <div className="bucketlist">
         <div className="bucketlist-wrapper">
@@ -242,6 +290,10 @@ class Bucketlist extends Component {
                   modal={this.state.modal}
                   handleChange={this.handleChange}
                   onSubmit={this.onSubmit}
+                  onEditBucketlist={this.onEditBucketlist}
+                  editValue={bucketEdit}
+                  onStateReset={this.onStateReset}
+                  value={list}
                 />
               </div>
 
@@ -258,7 +310,8 @@ class Bucketlist extends Component {
                   value={item}
                   onDelete={this.onDelete}
                   onItemDelete={this.onItemDelete}
-                  onHandleEdit={this.onHandleEdit}
+                  onHandleEdit={this.onEditItem}
+                  onEditBucketlist={this.onEditBucketlist}
                   editValue={edit}
                   onStateReset={this.onStateReset}
                 />
